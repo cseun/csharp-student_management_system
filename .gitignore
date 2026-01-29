@@ -1,0 +1,33 @@
+﻿# Visual Studio
+.vs/
+.vscode/
+*.user
+*.suo
+*.dbmdl
+*.userosscache
+*.sln.docstates
+
+# Build
+bin/
+obj/
+Debug/
+Release/
+
+# NuGet
+packages/
+*.nupkg
+
+# Test
+TestResults/
+*.trx
+*.coverage
+*.coveragexml
+
+# Logs & temp
+*.log
+*.cache
+*.tmp
+
+# OS
+.DS_Store
+Thumbs.db
