@@ -9,52 +9,69 @@ namespace StudentManagementApp
 {
     public class FileManager
     {
-        public static void LoadStudentScoresFromFile(string filePath)
+        public record LoadResult(int SuccessCount, int FailCount);
+
+        public static LoadResult LoadStudentScoresFromFile(string filePath)
         {
             var lines = File.ReadAllLines(filePath);
 
             StudentScoreManager.Clear();
 
+            int success = 0;
+            int fail = 0;
+
             for (int i = 1; i < lines.Length; i++)
             {
-                var cols = lines[i].Split(',');
+                try
+                {
+                    var cols = lines[i].Split(',');
 
-                if (cols.Length < 12)
-                    continue;
+                    if (cols.Length < 12)
+                        throw new Exception();
 
-                if (!int.TryParse(cols[0], out int grade)) continue;
-                if (!int.TryParse(cols[1], out int cls)) continue;
-                if (!int.TryParse(cols[2], out int no)) continue;
+                    if (!int.TryParse(cols[0], out int grade)) continue;
+                    if (!int.TryParse(cols[1], out int cls)) continue;
+                    if (!int.TryParse(cols[2], out int no)) continue;
 
-                string name = cols[3];
+                    string name = cols[3];
 
-                if (!int.TryParse(cols[4], out int year)) continue;
-                if (!int.TryParse(cols[5], out int semester)) continue;
+                    if (!int.TryParse(cols[4], out int year)) continue;
+                    if (!int.TryParse(cols[5], out int semester)) continue;
 
-                if (!Enum.TryParse(cols[6], out ExamType examType))
-                    continue;
+                    if (!Enum.TryParse(cols[6], out ExamType examType))
+                        continue;
 
-                if (!int.TryParse(cols[7], out int kor)) continue;
-                if (!int.TryParse(cols[8], out int eng)) continue;
-                if (!int.TryParse(cols[9], out int math)) continue;
-                if (!int.TryParse(cols[10], out int social)) continue;
-                if (!int.TryParse(cols[11], out int science)) continue;
+                    if (!int.TryParse(cols[7], out int kor)) continue;
+                    if (!int.TryParse(cols[8], out int eng)) continue;
+                    if (!int.TryParse(cols[9], out int math)) continue;
+                    if (!int.TryParse(cols[10], out int social)) continue;
+                    if (!int.TryParse(cols[11], out int science)) continue;
 
-                Student student = new Student(
-                    new StudentKey(grade, cls, no),
-                    cols[0]
-                );
+                    Student student = new Student(
+                        new StudentKey(grade, cls, no),
+                        cols[0]
+                    );
 
-                Exam exam = new Exam(year, semester, examType);
+                    Exam exam = new Exam(year, semester, examType);
 
-                Score score = new Score(
-                    exam, kor, eng, math, social, science
-                );
+                    Score score = new Score(
+                        exam, kor, eng, math, social, science
+                    );
 
-                StudentScore studentScore = new StudentScore(student, score);
+                    StudentScore studentScore = new StudentScore(student, score);
 
-                StudentScoreManager.AddStudentScore(studentScore);
+                    if (!StudentScoreManager.AddStudentScore(studentScore))
+                        throw new Exception(); // 중복
+
+                    success++;
+                }
+                catch
+                {
+                    fail++;
+                }
             }
+
+            return new LoadResult(success, fail);
         }
 
         public static void SaveStudentScoresToFile(string filePath)

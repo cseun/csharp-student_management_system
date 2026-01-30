@@ -44,7 +44,13 @@ namespace StudentManagementApp
 
             var studentScore = StudentScoreManager
                 .SearchStudentScores(key.StudentKey, key.Exam)
-                .First();
+                .FirstOrDefault();
+
+            if (studentScore == null)
+            {
+                MessageBox.Show("선택된 성적 정보를 찾을 수 없습니다.");
+                return;
+            }
 
             fillStudentScoreInfo(studentScore);
 
@@ -168,55 +174,68 @@ namespace StudentManagementApp
         // 학생 성적 정보 추가하기
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            // UI에서 입력된 학생성적 정보 가져오기
-            StudentScore studentScoreInfo = getStudentScoreInfo();
-
-            // 학생 성적 추가
-            bool result = StudentScoreManager.AddStudentScore(studentScoreInfo);
-            if (result)
+            try
             {
-                MessageBox.Show("학생 성적 정보가 추가되었습니다.");
-                clearStudentScoreInfo();
+                // UI에서 입력된 학생성적 정보 가져오기
+                StudentScore studentScoreInfo = getStudentScoreInfo();
+
+                // 학생 성적 추가
+                bool result = StudentScoreManager.AddStudentScore(studentScoreInfo);
+                if (result)
+                {
+                    MessageBox.Show("학생 성적 정보가 추가되었습니다.");
+                    clearStudentScoreInfo();
+                }
+                else
+                {
+                    MessageBox.Show("이미 존재하는 학생 성적 정보입니다.");
+                }
+
+                // 현재 선택된 시험 기준
+                Exam exam = studentScoreInfo.Score.Exam;
+
+                RefreshStudentScoreList(exam: exam);
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("이미 존재하는 학생 성적 정보입니다.");
+                MessageBox.Show(ex.Message);
             }
-
-            // 현재 선택된 시험 기준
-            Exam exam = studentScoreInfo.Score.Exam;
-
-            RefreshStudentScoreList(exam: exam);
         }
 
         private void btnModify_Click(object sender, EventArgs e)
         {
-            //oldKey: 현재 리스트에서 선택된 학생 정보의 key값을 가져오기 (리스트에 표시될 때 key값을 Tag에 가지고 있게 하기)
-            if (studentScoreList.SelectedItems.Count == 0)
-            {
-                MessageBox.Show("수정할 항목을 선택하세요.");
-                return;
-            }
-            ListViewItem selectedItem = studentScoreList.SelectedItems[0];
-            StudentExamKey? oldKey = selectedItem.Tag as StudentExamKey;
-            if (oldKey == null)
-            {
-                MessageBox.Show("선택된 항목의 키 정보가 올바르지 않습니다.");
-                return;
-            }
+            try { 
+                //oldKey: 현재 리스트에서 선택된 학생 정보의 key값을 가져오기 (리스트에 표시될 때 key값을 Tag에 가지고 있게 하기)
+                if (studentScoreList.SelectedItems.Count == 0)
+                {
+                    MessageBox.Show("수정할 항목을 선택하세요.");
+                    return;
+                }
+                ListViewItem selectedItem = studentScoreList.SelectedItems[0];
+                StudentExamKey? oldKey = selectedItem.Tag as StudentExamKey;
+                if (oldKey == null)
+                {
+                    MessageBox.Show("선택된 항목의 키 정보가 올바르지 않습니다.");
+                    return;
+                }
 
-            // UI에서 입력된 학생성적 정보 가져오기
-            StudentScore newStudentScore = getStudentScoreInfo();
-            // 학생 성적 수정
-            bool result = StudentScoreManager.ModifyStudentScore(oldKey, newStudentScore);
-            if (result)
-            {
-                MessageBox.Show("학생 성적 정보가 수정되었습니다.");
-                RefreshStudentScoreList(exam: newStudentScore.Score.Exam);
+                // UI에서 입력된 학생성적 정보 가져오기
+                StudentScore newStudentScore = getStudentScoreInfo();
+                // 학생 성적 수정
+                bool result = StudentScoreManager.ModifyStudentScore(oldKey, newStudentScore);
+                if (result)
+                {
+                    MessageBox.Show("학생 성적 정보가 수정되었습니다.");
+                    RefreshStudentScoreList(exam: newStudentScore.Score.Exam);
+                }
+                else
+                {
+                    MessageBox.Show("학생 성적 정보 수정에 실패하였습니다.");
+                }
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("학생 성적 정보 수정에 실패하였습니다.");
+                MessageBox.Show(ex.Message);
             }
         }
 
@@ -449,9 +468,11 @@ namespace StudentManagementApp
 
             try
             {
+                var result = FileManager.LoadStudentScoresFromFile(dialog.FileName);
+
                 FileManager.LoadStudentScoresFromFile(dialog.FileName);
                 RefreshStudentScoreList();
-                MessageBox.Show("파일을 성공적으로 불러왔습니다.");
+                MessageBox.Show($"파일 불러오기 완료\n\n성공: {result.SuccessCount}건\n실패: {result.FailCount}건");
             }
             catch (Exception ex)
             {
