@@ -511,14 +511,14 @@
             // examType
             // 
             examType.DataSource = new ExamType[]
-    {
-    ExamType.Midterm,
-    ExamType.Final,
-    ExamType.MidFinal
-    };
+            {
+                ExamType.Midterm,
+                ExamType.Final,
+                ExamType.MidFinal
+            };
             examType.DropDownStyle = ComboBoxStyle.DropDownList;
             examType.FormattingEnabled = true;
-            examType.Items.AddRange(new object[] { ExamType.Midterm, ExamType.Final, ExamType.MidFinal });
+            //examType.Items.AddRange(new object[] { ExamType.Midterm, ExamType.Final, ExamType.MidFinal });
             examType.Location = new Point(506, 43);
             examType.Name = "examType";
             examType.Size = new Size(102, 28);
