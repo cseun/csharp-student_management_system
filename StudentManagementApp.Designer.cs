@@ -30,20 +30,20 @@
         {
             groupBox1 = new GroupBox();
             studentScoreList = new ListView();
-            list_year = new ColumnHeader();
-            list_semester = new ColumnHeader();
-            list_exam_type = new ColumnHeader();
-            list_name = new ColumnHeader();
             list_grade = new ColumnHeader();
             list_class = new ColumnHeader();
             list_student_no = new ColumnHeader();
-            list_rank = new ColumnHeader();
-            list_total_score = new ColumnHeader();
+            list_name = new ColumnHeader();
+            list_year = new ColumnHeader();
+            list_semester = new ColumnHeader();
+            list_exam_type = new ColumnHeader();
             list_kor_score = new ColumnHeader();
             list_eng_score = new ColumnHeader();
             list_math_score = new ColumnHeader();
             list_social_score = new ColumnHeader();
             list_science_score = new ColumnHeader();
+            list_total_score = new ColumnHeader();
+            list_rank = new ColumnHeader();
             searchNo = new ComboBox();
             searchGrade = new ComboBox();
             searchClass = new ComboBox();
@@ -120,13 +120,31 @@
             // 
             // studentScoreList
             // 
-            studentScoreList.Columns.AddRange(new ColumnHeader[] { list_year, list_semester, list_exam_type, list_name, list_grade, list_class, list_student_no, list_rank, list_total_score, list_kor_score, list_eng_score, list_math_score, list_social_score, list_science_score });
+            studentScoreList.Columns.AddRange(new ColumnHeader[] { list_grade, list_class, list_student_no, list_name, list_year, list_semester, list_exam_type, list_kor_score, list_eng_score, list_math_score, list_social_score, list_science_score, list_total_score, list_rank });
             studentScoreList.Location = new Point(26, 87);
             studentScoreList.Name = "studentScoreList";
             studentScoreList.Size = new Size(822, 602);
             studentScoreList.TabIndex = 16;
             studentScoreList.UseCompatibleStateImageBehavior = false;
             studentScoreList.View = View.Details;
+            studentScoreList.SelectedIndexChanged += studentScoreList_SelectedIndexChanged;
+            // 
+            // list_grade
+            // 
+            list_grade.Text = "Grade";
+            // 
+            // list_class
+            // 
+            list_class.Text = "Class";
+            // 
+            // list_student_no
+            // 
+            list_student_no.Text = "No.";
+            list_student_no.Width = 40;
+            // 
+            // list_name
+            // 
+            list_name.Text = "Name";
             // 
             // list_year
             // 
@@ -142,32 +160,6 @@
             // 
             list_exam_type.Text = "Exam Type";
             list_exam_type.Width = 90;
-            // 
-            // list_name
-            // 
-            list_name.Text = "Name";
-            // 
-            // list_grade
-            // 
-            list_grade.Text = "Grade";
-            // 
-            // list_class
-            // 
-            list_class.Text = "Class";
-            // 
-            // list_student_no
-            // 
-            list_student_no.Text = "No.";
-            list_student_no.Width = 40;
-            // 
-            // list_rank
-            // 
-            list_rank.Text = "Rank";
-            // 
-            // list_total_score
-            // 
-            list_total_score.Text = "Total Score";
-            list_total_score.Width = 90;
             // 
             // list_kor_score
             // 
@@ -191,6 +183,15 @@
             // 
             list_science_score.Text = "Science";
             list_science_score.Width = 70;
+            // 
+            // list_total_score
+            // 
+            list_total_score.Text = "Total Score";
+            list_total_score.Width = 90;
+            // 
+            // list_rank
+            // 
+            list_rank.Text = "Rank";
             // 
             // searchNo
             // 
@@ -505,7 +506,16 @@
             // 
             // examType
             // 
+            //        examType.DataSource = new ExamType[]
+            //{
+            //ExamType.Midterm,
+            //ExamType.Final,
+            //ExamType.MidFinal
+            //};
+            examType.DataSource = Enum.GetValues(typeof(ExamType));
+            examType.DropDownStyle = ComboBoxStyle.DropDownList;
             examType.FormattingEnabled = true;
+            //examType.Items.AddRange(new object[] { ExamType.Midterm, ExamType.Final, ExamType.MidFinal });
             examType.Location = new Point(506, 43);
             examType.Name = "examType";
             examType.Size = new Size(102, 28);
@@ -711,10 +721,10 @@
         private ColumnHeader list_year;
         private ColumnHeader list_semester;
         private ColumnHeader list_exam_type;
-        private ColumnHeader list_name;
         private ColumnHeader list_grade;
         private ColumnHeader list_class;
         private ColumnHeader list_student_no;
+        private ColumnHeader list_name;
         private ColumnHeader list_rank;
         private ColumnHeader list_total_score;
         private ColumnHeader list_kor_score;
