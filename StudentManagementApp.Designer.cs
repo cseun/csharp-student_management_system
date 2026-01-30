@@ -44,10 +44,10 @@
             list_science_score = new ColumnHeader();
             list_total_score = new ColumnHeader();
             list_rank = new ColumnHeader();
-            searchNo = new ComboBox();
-            searchGrade = new ComboBox();
-            searchClass = new ComboBox();
-            searchName = new ComboBox();
+            searchNoBox = new ComboBox();
+            searchGradeBox = new ComboBox();
+            searchClassBox = new ComboBox();
+            searchNameBox = new ComboBox();
             label3 = new Label();
             label2 = new Label();
             label1 = new Label();
@@ -100,10 +100,10 @@
             // groupBox1
             // 
             groupBox1.Controls.Add(studentScoreList);
-            groupBox1.Controls.Add(searchNo);
-            groupBox1.Controls.Add(searchGrade);
-            groupBox1.Controls.Add(searchClass);
-            groupBox1.Controls.Add(searchName);
+            groupBox1.Controls.Add(searchNoBox);
+            groupBox1.Controls.Add(searchGradeBox);
+            groupBox1.Controls.Add(searchClassBox);
+            groupBox1.Controls.Add(searchNameBox);
             groupBox1.Controls.Add(label3);
             groupBox1.Controls.Add(label2);
             groupBox1.Controls.Add(label1);
@@ -193,37 +193,37 @@
             // 
             list_rank.Text = "Rank";
             // 
-            // searchNo
+            // searchNoBox
             // 
-            searchNo.FormattingEnabled = true;
-            searchNo.Location = new Point(490, 38);
-            searchNo.Name = "searchNo";
-            searchNo.Size = new Size(57, 28);
-            searchNo.TabIndex = 15;
+            searchNoBox.FormattingEnabled = true;
+            searchNoBox.Location = new Point(490, 38);
+            searchNoBox.Name = "searchNoBox";
+            searchNoBox.Size = new Size(57, 28);
+            searchNoBox.TabIndex = 15;
             // 
-            // searchGrade
+            // searchGradeBox
             // 
-            searchGrade.FormattingEnabled = true;
-            searchGrade.Location = new Point(275, 40);
-            searchGrade.Name = "searchGrade";
-            searchGrade.Size = new Size(83, 28);
-            searchGrade.TabIndex = 14;
+            searchGradeBox.FormattingEnabled = true;
+            searchGradeBox.Location = new Point(275, 40);
+            searchGradeBox.Name = "searchGradeBox";
+            searchGradeBox.Size = new Size(83, 28);
+            searchGradeBox.TabIndex = 14;
             // 
-            // searchClass
+            // searchClassBox
             // 
-            searchClass.FormattingEnabled = true;
-            searchClass.Location = new Point(364, 40);
-            searchClass.Name = "searchClass";
-            searchClass.Size = new Size(78, 28);
-            searchClass.TabIndex = 14;
+            searchClassBox.FormattingEnabled = true;
+            searchClassBox.Location = new Point(364, 40);
+            searchClassBox.Name = "searchClassBox";
+            searchClassBox.Size = new Size(78, 28);
+            searchClassBox.TabIndex = 14;
             // 
-            // searchName
+            // searchNameBox
             // 
-            searchName.FormattingEnabled = true;
-            searchName.Location = new Point(80, 40);
-            searchName.Name = "searchName";
-            searchName.Size = new Size(92, 28);
-            searchName.TabIndex = 13;
+            searchNameBox.FormattingEnabled = true;
+            searchNameBox.Location = new Point(80, 40);
+            searchNameBox.Name = "searchNameBox";
+            searchNameBox.Size = new Size(92, 28);
+            searchNameBox.TabIndex = 13;
             // 
             // label3
             // 
@@ -278,6 +278,7 @@
             btnShowAll.TabIndex = 7;
             btnShowAll.Text = "Show All";
             btnShowAll.UseVisualStyleBackColor = true;
+            btnShowAll.Click += btnShowAll_Click;
             // 
             // btnSearch
             // 
@@ -287,6 +288,7 @@
             btnSearch.TabIndex = 6;
             btnSearch.Text = "Search";
             btnSearch.UseVisualStyleBackColor = true;
+            btnSearch.Click += btnSearch_Click;
             // 
             // groupBox2
             // 
@@ -506,13 +508,12 @@
             // 
             // examType
             // 
-            //        examType.DataSource = new ExamType[]
-            //{
-            //ExamType.Midterm,
-            //ExamType.Final,
-            //ExamType.MidFinal
-            //};
-            examType.DataSource = Enum.GetValues(typeof(ExamType));
+            examType.DataSource = new ExamType[]
+            {
+                ExamType.Midterm,
+                ExamType.Final,
+                ExamType.MidFinal
+            };
             examType.DropDownStyle = ComboBoxStyle.DropDownList;
             examType.FormattingEnabled = true;
             //examType.Items.AddRange(new object[] { ExamType.Midterm, ExamType.Final, ExamType.MidFinal });
@@ -673,10 +674,10 @@
         private GroupBox groupBox1;
         private GroupBox groupBox2;
         private ListView studentScoreList;
-        private ComboBox searchNo;
-        private ComboBox searchGrade;
-        private ComboBox searchClass;
-        private ComboBox searchName;
+        private ComboBox searchNoBox;
+        private ComboBox searchGradeBox;
+        private ComboBox searchClassBox;
+        private ComboBox searchNameBox;
         private Label label3;
         private Label label2;
         private Label label1;

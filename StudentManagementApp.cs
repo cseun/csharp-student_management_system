@@ -186,7 +186,7 @@ namespace StudentManagementApp
             // 현재 선택된 시험 기준
             Exam exam = studentScoreInfo.Score.Exam;
 
-            RefreshStudentScoreList(exam);
+            RefreshStudentScoreList(exam: exam);
         }
 
         private void btnModify_Click(object sender, EventArgs e)
@@ -212,7 +212,7 @@ namespace StudentManagementApp
             if (result)
             {
                 MessageBox.Show("학생 성적 정보가 수정되었습니다.");
-                RefreshStudentScoreList(newStudentScore.Score.Exam);
+                RefreshStudentScoreList(exam: newStudentScore.Score.Exam);
             }
             else
             {
@@ -240,7 +240,7 @@ namespace StudentManagementApp
             if (result)
             {
                 MessageBox.Show("학생 성적 정보가 삭제되었습니다.");
-                RefreshStudentScoreList(key.Exam);
+                RefreshStudentScoreList(exam: key.Exam);
                 clearStudentScoreInfo();
             }
             else
@@ -251,10 +251,12 @@ namespace StudentManagementApp
         }
 
         // 리스트 갱신
-        private void RefreshStudentScoreList(Exam? exam = null)
+        private void RefreshStudentScoreList(
+            Exam? exam = null,
+            bool useSearch = false
+        )
         {
-            // 검색
-            var list = StudentScoreManager.SearchStudentScores();
+            studentScoreList.Items.Clear();
 
             // 시험에 해당하는 석차만 재계산
             if (exam != null)
@@ -262,7 +264,22 @@ namespace StudentManagementApp
                 StudentScoreManager.CalculateRankByExam(exam);
             }
 
-            studentScoreList.Items.Clear();
+            List<StudentScore> list;
+            if (useSearch)
+            {
+                list = StudentScoreManager.SearchStudentScores(
+                    searchName: searchNameBox.Text,
+                    searchGrade: searchGradeBox.Text,
+                    searchClass: searchClassBox.Text,
+                    searchNo: searchNoBox.Text
+                );
+            }
+            else
+            {
+                list = StudentScoreManager.SearchStudentScores();
+            }
+
+            FillSearchBoxes(list);
 
             foreach (var ss in list)
             {
@@ -287,10 +304,56 @@ namespace StudentManagementApp
                 item.Tag = ss.Key; // Key 숨김
 
                 studentScoreList.Items.Add(item);
-
-                UpdateButtonState();
             }
+
+            UpdateButtonState();
         }
+
+        private void ClearSearchBox()
+        {
+            searchNameBox.SelectedIndex = -1;
+            searchGradeBox.SelectedIndex = -1;
+            searchClassBox.SelectedIndex = -1;
+            searchNoBox.SelectedIndex = -1;
+
+            searchNameBox.Text = "";
+            searchGradeBox.Text = "";
+            searchClassBox.Text = "";
+            searchNoBox.Text = "";
+        }
+
+        private void btnSearch_Click(object sender, EventArgs e)
+        {
+            RefreshStudentScoreList(useSearch: true);
+        }
+
+        private void btnShowAll_Click(object sender, EventArgs e)
+        {
+            ClearSearchBox();
+            RefreshStudentScoreList();
+        }
+
+        private void FillSearchBoxes(IEnumerable<StudentScore> list)
+        {
+            searchNameBox.Items.Clear();
+            searchGradeBox.Items.Clear();
+            searchClassBox.Items.Clear();
+            searchNoBox.Items.Clear();
+
+            searchNameBox.Items.AddRange(
+                list.Select(s => s.Student.Name).Distinct().ToArray());
+
+            searchGradeBox.Items.AddRange(
+                list.Select(s => s.Student.Key.Grade.ToString()).Distinct().ToArray());
+
+            searchClassBox.Items.AddRange(
+                list.Select(s => s.Student.Key.Class.ToString()).Distinct().ToArray());
+
+            searchNoBox.Items.AddRange(
+                list.Select(s => s.Student.Key.No.ToString()).Distinct().ToArray());
+        }
+
+
 
         #region 입력값 숫자 필터링
         private void koreanScore_KeyPress(object sender, KeyPressEventArgs e)
@@ -478,14 +541,47 @@ namespace StudentManagementApp
         private static Dictionary<StudentExamKey, StudentScore> studentScores = new Dictionary<StudentExamKey, StudentScore>();
 
         // 학생 성적 정보 검색
-        public static List<StudentScore> SearchStudentScores(StudentKey? studentKey = null, Exam? exam = null)
-        {
-            return studentScores.Where(keyValue =>
-               (studentKey == null || keyValue.Key.StudentKey.Equals(studentKey)) &&
-               (exam == null || keyValue.Key.Exam.Equals(exam))
-            )
-            .Select(keyValue => keyValue.Value)
-            .ToList();
+        public static List<StudentScore> SearchStudentScores(
+            StudentKey? studentKey = null, 
+            Exam? exam = null,
+            string searchName = "",
+            string searchGrade = "",
+            string searchClass = "",
+            string searchNo = ""
+        ) {
+            bool hasSearchText =
+                !string.IsNullOrWhiteSpace(searchName) ||
+                !string.IsNullOrWhiteSpace(searchGrade) ||
+                !string.IsNullOrWhiteSpace(searchClass) ||
+                !string.IsNullOrWhiteSpace(searchNo);
+
+            if (hasSearchText)
+            {
+                return studentScores
+                    .Where(kv =>
+                        (string.IsNullOrWhiteSpace(searchName) ||
+                         kv.Value.Student.Name.Contains(searchName)) &&
+
+                        (string.IsNullOrWhiteSpace(searchGrade) ||
+                         kv.Key.StudentKey.Grade.ToString() == searchGrade) &&
+
+                        (string.IsNullOrWhiteSpace(searchClass) ||
+                         kv.Key.StudentKey.Class.ToString() == searchClass) &&
+
+                        (string.IsNullOrWhiteSpace(searchNo) ||
+                         kv.Key.StudentKey.No.ToString() == searchNo)
+                    )
+                    .Select(kv => kv.Value)
+                    .ToList();
+            }
+
+            return studentScores
+                .Where(kv =>
+                    (studentKey == null || kv.Key.StudentKey.Equals(studentKey)) &&
+                    (exam == null || kv.Key.Exam.Equals(exam))
+                )
+                .Select(kv => kv.Value)
+                .ToList();
         }
 
         // 학생 성적 정보 추가
