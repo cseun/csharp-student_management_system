@@ -437,233 +437,50 @@ namespace StudentManagementApp
             }
         }
         #endregion
-    }
 
-    #region Student, Score, Exam, StudentScore 클래스
-    public enum ExamType
-    {
-        Midterm,
-        Final,
-        MidFinal
-    }
-
-    public record StudentKey(int Grade, int Class, int No);
-
-    public class Student
-    {
-        public StudentKey Key { get; }
-        public string Name { get; set; }
-        public Student(StudentKey key, string name)
+        private void btnLoadFile_Click(object sender, EventArgs e)
         {
-            Key = key;
-            Name = name;
-        }
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*";
+            dialog.Title = "학생 성적 파일 불러오기";
 
-        public bool HasSameKey(Student other)
-        {
-            return Key.Equals(other.Key);
-        }
+            if (dialog.ShowDialog() != DialogResult.OK)
+                return;
 
-        public override string ToString()
-        {
-            return $"{Key.Grade}-{Key.Class}-{Key.No} {Name}";
-        }
-    }
-
-    public record Exam(int Year, int Semester, ExamType ExamType);
-    public record StudentExamKey(StudentKey StudentKey, Exam Exam);
-    public class Score
-    {
-        public Exam Exam { get; set; }
-        public int Kor { get; set; }
-        public int Eng { get; set; }
-        public int Math { get; set; }
-        public int Social { get; set; }
-        public int Science { get; set; }
-        public int TotalScore => Kor + Eng + Math + Social + Science;
-
-        public Score(Exam exam, int kor, int eng, int math, int social, int science)
-        {
-            Exam = exam;
-            Kor = kor;
-            Eng = eng;
-            Math = math;
-            Social = social;
-            Science = science;
-        }
-
-        public bool IsSameExam(Exam exam)
-        {
-            return Exam.Equals(exam);
-        }
-    }
-
-    class StudentScore
-    {
-        public StudentExamKey Key { get; }
-        public Student Student { get; }
-        public Score Score { get; }
-        public int Rank { get; set; }
-
-        public StudentScore(Student student, Score score)
-        {
-            this.Student = student;
-            this.Score = score;
-            this.Key = new StudentExamKey(student.Key, this.Score.Exam);
-        }
-        public override string ToString()
-        {
-            Debug.WriteLine("=== StudentScoreInfo ===");
-            Debug.WriteLine($"학생: {this.Student}");
-            Debug.WriteLine($"학년: {this.Student.Key.Grade}");
-            Debug.WriteLine($"반: {this.Student.Key.Class}");
-            Debug.WriteLine($"번호: {this.Student.Key.No}");
-            Debug.WriteLine($"이름: {this.Student.Name}");
-
-            Debug.WriteLine($"시험년도: {this.Score.Exam.Year}");
-            Debug.WriteLine($"학기: {this.Score.Exam.Semester}");
-            Debug.WriteLine($"시험종류: {this.Score.Exam.ExamType}");
-
-            Debug.WriteLine($"국어: {this.Score.Kor}");
-            Debug.WriteLine($"영어: {this.Score.Eng}");
-            Debug.WriteLine($"수학: {this.Score.Math}");
-            Debug.WriteLine($"사회: {this.Score.Social}");
-            Debug.WriteLine($"과학: {this.Score.Science}");
-
-            return $"{Student} / {Score.Exam} / 총점 {Score.TotalScore} / 석차 {Rank}";
-        }
-    }
-    #endregion
-
-    class StudentScoreManager
-    {
-        // 학생 성적 목록
-        private static Dictionary<StudentExamKey, StudentScore> studentScores = new Dictionary<StudentExamKey, StudentScore>();
-
-        // 학생 성적 정보 검색
-        public static List<StudentScore> SearchStudentScores(
-            StudentKey? studentKey = null, 
-            Exam? exam = null,
-            string searchName = "",
-            string searchGrade = "",
-            string searchClass = "",
-            string searchNo = ""
-        ) {
-            bool hasSearchText =
-                !string.IsNullOrWhiteSpace(searchName) ||
-                !string.IsNullOrWhiteSpace(searchGrade) ||
-                !string.IsNullOrWhiteSpace(searchClass) ||
-                !string.IsNullOrWhiteSpace(searchNo);
-
-            if (hasSearchText)
+            try
             {
-                return studentScores
-                    .Where(kv =>
-                        (string.IsNullOrWhiteSpace(searchName) ||
-                         kv.Value.Student.Name.Contains(searchName)) &&
-
-                        (string.IsNullOrWhiteSpace(searchGrade) ||
-                         kv.Key.StudentKey.Grade.ToString() == searchGrade) &&
-
-                        (string.IsNullOrWhiteSpace(searchClass) ||
-                         kv.Key.StudentKey.Class.ToString() == searchClass) &&
-
-                        (string.IsNullOrWhiteSpace(searchNo) ||
-                         kv.Key.StudentKey.No.ToString() == searchNo)
-                    )
-                    .Select(kv => kv.Value)
-                    .ToList();
+                FileManager.LoadStudentScoresFromFile(dialog.FileName);
+                RefreshStudentScoreList();
+                MessageBox.Show("파일을 성공적으로 불러왔습니다.");
             }
-
-            return studentScores
-                .Where(kv =>
-                    (studentKey == null || kv.Key.StudentKey.Equals(studentKey)) &&
-                    (exam == null || kv.Key.Exam.Equals(exam))
-                )
-                .Select(kv => kv.Value)
-                .ToList();
-        }
-
-        // 학생 성적 정보 추가
-        public static bool AddStudentScore(StudentScore studentScoreInfo)
-        {
-            // 이미 학생 성적이 존재하면 성적 정보를 검색.
-            if (studentScores.ContainsKey(studentScoreInfo.Key))
-                return false;
-
-            studentScores.Add(studentScoreInfo.Key, studentScoreInfo);
-
-#if DEBUG
-            foreach (StudentScore s in SearchStudentScores())
+            catch (Exception ex)
             {
-                s.ToString();
-            }
-#endif
-            return true;
-        }
-
-        public static bool ModifyStudentScore(StudentExamKey oldKey, StudentScore newStudentScore)
-        {
-            List<StudentScore> searchedStudentScores = SearchStudentScores(oldKey.StudentKey, oldKey.Exam);
-
-            if (!studentScores.ContainsKey(oldKey))
-                return false;
-
-            if (!oldKey.Equals(newStudentScore.Key))
-            {
-                studentScores.Remove(oldKey);
-
-                if (studentScores.ContainsKey(newStudentScore.Key))
-                    return false; // 새 Key 중복
-
-                studentScores.Add(newStudentScore.Key, newStudentScore);
-            }
-            else
-            {
-                studentScores[oldKey] = newStudentScore;
-            }
-
-            return true;
-        }
-
-        public static bool DeleteStudentScore(StudentExamKey key)
-        {
-            return studentScores.Remove(key);
-        }
-
-        // 같은 시험 기준 석차 계산
-        public static void CalculateRankByExam(Exam exam)
-        {
-            // 해당 시험 성적만 가져오기
-            var list = studentScores
-                .Where(kv => kv.Key.Exam.Equals(exam))
-                .Select(kv => kv.Value)
-                .OrderByDescending(s => s.Score.TotalScore)
-                .ToList();
-
-            int rank = 1;
-            int prevScore = -1;
-            int sameRankCount = 0;
-
-            foreach (var score in list)
-            {
-                if (score.Score.TotalScore == prevScore)
-                {
-                    // 동점일 경우 같은 석차
-                    score.Rank = rank;
-                    sameRankCount++;
-                }
-                else
-                {
-                    // 점수 다르면 석차 갱신
-                    rank += sameRankCount;
-                    score.Rank = rank;
-                    sameRankCount = 1;
-                    prevScore = score.Score.TotalScore;
-                }
+                MessageBox.Show($"파일 로드 중 오류 발생:\n{ex.Message}");
             }
         }
 
+        private void btnSaveFile_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog
+            {
+                Filter = "CSV Files (*.csv)|*.csv|All Files (*.*)|*.*",
+                Title = "학생 성적 파일 저장",
+                FileName = "StudentScores.csv",
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments)
+            };
+
+            if (dialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            try
+            {
+                FileManager.SaveStudentScoresToFile(dialog.FileName);
+                MessageBox.Show("파일이 성공적으로 저장되었습니다.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"파일 저장 중 오류가 발생했습니다.\n{ex.Message}");
+            }
+        }
     }
-    
 }
