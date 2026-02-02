@@ -25,10 +25,12 @@ namespace StudentManagementApp
         {
             Debug.WriteLine("=== StudentScoreInfo ===");
             Debug.WriteLine($"학생: {this.Student}");
+            Debug.WriteLine($"학교: {this.Student.Key.School}");
             Debug.WriteLine($"학년: {this.Student.Key.Grade}");
             Debug.WriteLine($"반: {this.Student.Key.Class}");
             Debug.WriteLine($"번호: {this.Student.Key.No}");
             Debug.WriteLine($"이름: {this.Student.Name}");
+            Debug.WriteLine($"상태: {this.Student.Status}");
 
             Debug.WriteLine($"시험년도: {this.Score.Exam.Year}");
             Debug.WriteLine($"학기: {this.Score.Exam.Semester}");

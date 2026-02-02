@@ -25,6 +25,10 @@ namespace StudentManagementApp
             studentScoreList.GridLines = true;
             studentScoreList.MultiSelect = false;
 
+            btnAddImage.Parent = studentPictureBox;
+            btnAddImage.Dock = DockStyle.Fill;
+            btnAddImage.BringToFront();
+
             UpdateButtonState();
         }
 
@@ -60,7 +64,9 @@ namespace StudentManagementApp
         private void fillStudentScoreInfo(StudentScore studentScore) // 학생 성적 정보를 UI에 입력하기 
         {
             // 학생 정보
+            studentStatus.SelectedItem = studentScore.Student.Status;
             studentName.Text = studentScore.Student.Name;
+            studentSchool.Text = studentScore.Student.Key.School.ToString();
             studentGrade.Text = studentScore.Student.Key.Grade.ToString();
             studentClass.Text = studentScore.Student.Key.Class.ToString();
             studentNo.Text = studentScore.Student.Key.No.ToString();
@@ -78,15 +84,31 @@ namespace StudentManagementApp
             scienceScore.Text = studentScore.Score.Science.ToString();
             totalScore.Text = studentScore.Score.TotalScore.ToString();
             rank.Text = studentScore.Rank.ToString();
+
+            if (!string.IsNullOrEmpty(studentScore.Student.ImagePath) && File.Exists(studentScore.Student.ImagePath))
+            {
+                studentPictureBox.Image = Image.FromFile(studentScore.Student.ImagePath);
+                btnAddImage.Visible = false;
+            }
+            else
+            {
+                studentPictureBox.Image = Image.FromFile("images/default.jpg");
+                btnAddImage.Visible = true;
+            }
         }
 
         private void clearStudentScoreInfo() // 학생 정보 입력 UI비우기
         {
             // 학생 정보
+            studentStatus.SelectedIndex = -1; // 기본값 선택
+            studentSchool.Text = "";
             studentName.Text = "";
             studentGrade.Text = "";
             studentClass.Text = "";
             studentNo.Text = "";
+            studentPictureBox.Image = null;
+            studentPictureBox.Tag = null;
+            btnAddImage.Visible = true;
 
             // 시험 정보
             examYear.Text = "";
@@ -112,11 +134,15 @@ namespace StudentManagementApp
             btnAdd.Enabled = true;
             btnModify.Enabled = isSelected;
             btnDelete.Enabled = isSelected;
+
+            UpdateImageButtonVisibility();
         }
 
         private StudentScore getStudentScoreInfo() // UI에서 학생 성적 정보 가져오기
         {
-            if (string.IsNullOrWhiteSpace(studentName.Text) ||
+            if (studentStatus.SelectedIndex == -1 ||
+                string.IsNullOrWhiteSpace(studentSchool.Text) ||
+                string.IsNullOrWhiteSpace(studentName.Text) ||
                 string.IsNullOrWhiteSpace(studentGrade.Text) ||
                 string.IsNullOrWhiteSpace(studentClass.Text) ||
                 string.IsNullOrWhiteSpace(studentNo.Text) ||
@@ -133,6 +159,7 @@ namespace StudentManagementApp
             }
 
             StudentKey studentKey = new StudentKey(
+                studentSchool.Text.Trim(),
                 int.Parse(studentGrade.Text),
                 int.Parse(studentClass.Text),
                 int.Parse(studentNo.Text)
@@ -148,6 +175,8 @@ namespace StudentManagementApp
                 );
             }
 
+            string? imagePath = studentPictureBox.Tag as string;
+
             Exam exam = new Exam(
                 int.Parse(examYear.Text),
                 int.Parse(examSemester.Text),
@@ -157,7 +186,9 @@ namespace StudentManagementApp
             StudentScore studentScore = new StudentScore(
                  new Student(
                      studentKey,
-                     studentName.Text
+                     studentName.Text,
+                     studentStatus.SelectedItem is StudentStatus stype ? stype : StudentStatus.Studying,
+                     imagePath
                 ),
                 new Score(
                     exam,
@@ -204,7 +235,8 @@ namespace StudentManagementApp
 
         private void btnModify_Click(object sender, EventArgs e)
         {
-            try { 
+            try
+            {
                 //oldKey: 현재 리스트에서 선택된 학생 정보의 key값을 가져오기 (리스트에 표시될 때 key값을 Tag에 가지고 있게 하기)
                 if (studentScoreList.SelectedItems.Count == 0)
                 {
@@ -277,16 +309,22 @@ namespace StudentManagementApp
         {
             studentScoreList.Items.Clear();
 
-            // 시험에 해당하는 석차만 재계산
-            if (exam != null)
-            {
-                StudentScoreManager.CalculateRankByExam(exam);
-            }
+            // 시험 정보 존재시 해당하는 석차만 재계산 / 없으면 전체 재계산
+            StudentScoreManager.CalculateRank(exam);
 
             List<StudentScore> list;
             if (useSearch)
             {
+                StudentStatus? status = null;
+
+                if (Enum.TryParse(searchStatusBox.Text, out StudentStatus parsedStatus))
+                {
+                    status = parsedStatus;
+                }
+
                 list = StudentScoreManager.SearchStudentScores(
+                    status: status,
+                    searchSchool: searchSchoolBox.Text,
                     searchName: searchNameBox.Text,
                     searchGrade: searchGradeBox.Text,
                     searchClass: searchClassBox.Text,
@@ -302,10 +340,13 @@ namespace StudentManagementApp
 
             foreach (var ss in list)
             {
-                var item = new ListViewItem(ss.Student.Key.Grade.ToString()); // 학년
+                var item = new ListViewItem(ss.Student.Key.School.ToString()); // 학교
+                item.SubItems.Add(ss.Student.Key.Grade.ToString()); // 학년
                 item.SubItems.Add(ss.Student.Key.Class.ToString()); // 반
                 item.SubItems.Add(ss.Student.Key.No.ToString()); // 번호
                 item.SubItems.Add(ss.Student.Name); // 이름
+
+                item.SubItems.Add(ss.Student.Status.ToString()); // 학생 상태
 
                 item.SubItems.Add(ss.Score.Exam.Year.ToString()); // 시험년도
                 item.SubItems.Add(ss.Score.Exam.Semester.ToString()); // 학기
@@ -330,11 +371,15 @@ namespace StudentManagementApp
 
         private void ClearSearchBox()
         {
+            searchSchoolBox.SelectedIndex = -1;
+            searchStatusBox.SelectedIndex = -1;
             searchNameBox.SelectedIndex = -1;
             searchGradeBox.SelectedIndex = -1;
             searchClassBox.SelectedIndex = -1;
             searchNoBox.SelectedIndex = -1;
 
+            searchSchoolBox.Text = "";
+            searchStatusBox.Text = "";
             searchNameBox.Text = "";
             searchGradeBox.Text = "";
             searchClassBox.Text = "";
@@ -354,10 +399,18 @@ namespace StudentManagementApp
 
         private void FillSearchBoxes(IEnumerable<StudentScore> list)
         {
+            searchSchoolBox.Items.Clear();
+            searchStatusBox.Items.Clear();
             searchNameBox.Items.Clear();
             searchGradeBox.Items.Clear();
             searchClassBox.Items.Clear();
             searchNoBox.Items.Clear();
+
+            searchSchoolBox.Items.AddRange(
+                list.Select(s => s.Student.Key.School).Distinct().ToArray());
+
+            searchStatusBox.Items.AddRange(
+                list.Select(s => s.Student.Status.ToString()).Distinct().ToArray());
 
             searchNameBox.Items.AddRange(
                 list.Select(s => s.Student.Name).Distinct().ToArray());
@@ -371,8 +424,6 @@ namespace StudentManagementApp
             searchNoBox.Items.AddRange(
                 list.Select(s => s.Student.Key.No.ToString()).Distinct().ToArray());
         }
-
-
 
         #region 입력값 숫자 필터링
         private void koreanScore_KeyPress(object sender, KeyPressEventArgs e)
@@ -501,6 +552,57 @@ namespace StudentManagementApp
             catch (Exception ex)
             {
                 MessageBox.Show($"파일 저장 중 오류가 발생했습니다.\n{ex.Message}");
+            }
+        }
+
+        private void btnAddImage_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog
+            {
+                Filter = "Image Files (*.jpg;*.png)|*.jpg;*.png|All Files (*.*)|*.*",
+                Title = "학생 이미지 선택"
+            };
+
+            if (dialog.ShowDialog() != DialogResult.OK)
+                return;
+
+            // 이미지 로드
+            studentPictureBox.Image = Image.FromFile(dialog.FileName);
+            studentPictureBox.Tag = dialog.FileName;
+
+            UpdateImageButtonVisibility();
+        }
+
+        private void UpdateImageButtonVisibility()
+        {
+            bool hasImage = studentPictureBox.Tag is string path && File.Exists(path);
+
+            if (!hasImage)
+            {
+                btnAddImage.BackColor = Color.FromArgb(100, 0, 0, 0);
+                btnAddImage.Text = "Change Image";
+            }
+            else
+            {
+                // 이미지 있으면 투명
+                btnAddImage.BackColor = Color.FromArgb(0, 0, 0, 0);
+                btnAddImage.Text = "";
+            }
+        }
+
+        private void btnAddImage_MouseHover(object sender, EventArgs e)
+        {
+            if (studentPictureBox.Tag is string path && File.Exists(path))
+            {
+                btnAddImage.Text = "Change Image";
+            }
+        }
+
+        private void btnAddImage_MouseLeave(object sender, EventArgs e)
+        {
+            if (studentPictureBox.Tag is string path && File.Exists(path))
+            {
+                btnAddImage.Text = "";
             }
         }
     }

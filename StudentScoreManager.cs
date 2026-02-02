@@ -15,6 +15,8 @@ namespace StudentManagementApp
         public static List<StudentScore> SearchStudentScores(
             StudentKey? studentKey = null,
             Exam? exam = null,
+            StudentStatus? status = null,
+            string searchSchool = "",
             string searchName = "",
             string searchGrade = "",
             string searchClass = "",
@@ -22,6 +24,8 @@ namespace StudentManagementApp
         )
         {
             bool hasSearchText =
+                status != null ||
+                !string.IsNullOrWhiteSpace(searchSchool) ||
                 !string.IsNullOrWhiteSpace(searchName) ||
                 !string.IsNullOrWhiteSpace(searchGrade) ||
                 !string.IsNullOrWhiteSpace(searchClass) ||
@@ -31,8 +35,13 @@ namespace StudentManagementApp
             {
                 return studentScores
                     .Where(kv =>
+                        (status == null || kv.Value.Student.Status == status) &&
+
+                        (string.IsNullOrWhiteSpace(searchSchool) ||
+                         kv.Key.StudentKey.School.Contains(searchSchool, StringComparison.OrdinalIgnoreCase)) &&
+
                         (string.IsNullOrWhiteSpace(searchName) ||
-                         kv.Value.Student.Name.Contains(searchName)) &&
+                         kv.Value.Student.Name.Contains(searchName, StringComparison.OrdinalIgnoreCase)) &&
 
                         (string.IsNullOrWhiteSpace(searchGrade) ||
                          kv.Key.StudentKey.Grade.ToString() == searchGrade) &&
@@ -76,8 +85,6 @@ namespace StudentManagementApp
 
         public static bool ModifyStudentScore(StudentExamKey oldKey, StudentScore newStudentScore)
         {
-            List<StudentScore> searchedStudentScores = SearchStudentScores(oldKey.StudentKey, oldKey.Exam);
-
             if (!studentScores.ContainsKey(oldKey))
                 return false;
 
@@ -104,11 +111,11 @@ namespace StudentManagementApp
         }
 
         // 같은 시험 기준 석차 계산
-        public static void CalculateRankByExam(Exam exam)
+        public static void CalculateRank(Exam? exam = null)
         {
             // 해당 시험 성적만 가져오기
             var list = studentScores
-                .Where(kv => kv.Key.Exam.Equals(exam))
+                .Where(kv => exam == null || kv.Key.Exam.Equals(exam))
                 .Select(kv => kv.Value)
                 .OrderByDescending(s => s.Score.TotalScore)
                 .ToList();
