@@ -25,6 +25,7 @@ namespace StudentManagementApp
         {
             Debug.WriteLine("=== StudentScoreInfo ===");
             Debug.WriteLine($"학생: {this.Student}");
+            Debug.WriteLine($"이미지 주소: {this.Student.ImagePath}");
             Debug.WriteLine($"학교: {this.Student.Key.School}");
             Debug.WriteLine($"학년: {this.Student.Key.Grade}");
             Debug.WriteLine($"반: {this.Student.Key.Class}");

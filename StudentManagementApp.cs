@@ -30,6 +30,7 @@ namespace StudentManagementApp
             btnAddImage.BringToFront();
 
             UpdateButtonState();
+            UpdateImageButtonVisibility();
         }
 
         // 리스트에서 학생을 클릭하면 입력 정보 채우기
@@ -59,6 +60,7 @@ namespace StudentManagementApp
             fillStudentScoreInfo(studentScore);
 
             UpdateButtonState();
+            UpdateImageButtonVisibility();
         }
 
         private void fillStudentScoreInfo(StudentScore studentScore) // 학생 성적 정보를 UI에 입력하기 
@@ -88,12 +90,6 @@ namespace StudentManagementApp
             if (!string.IsNullOrEmpty(studentScore.Student.ImagePath) && File.Exists(studentScore.Student.ImagePath))
             {
                 studentPictureBox.Image = Image.FromFile(studentScore.Student.ImagePath);
-                btnAddImage.Visible = false;
-            }
-            else
-            {
-                studentPictureBox.Image = Image.FromFile("images/default.jpg");
-                btnAddImage.Visible = true;
             }
         }
 
@@ -134,8 +130,6 @@ namespace StudentManagementApp
             btnAdd.Enabled = true;
             btnModify.Enabled = isSelected;
             btnDelete.Enabled = isSelected;
-
-            UpdateImageButtonVisibility();
         }
 
         private StudentScore getStudentScoreInfo() // UI에서 학생 성적 정보 가져오기
@@ -253,6 +247,7 @@ namespace StudentManagementApp
 
                 // UI에서 입력된 학생성적 정보 가져오기
                 StudentScore newStudentScore = getStudentScoreInfo();
+                
                 // 학생 성적 수정
                 bool result = StudentScoreManager.ModifyStudentScore(oldKey, newStudentScore);
                 if (result)
@@ -367,6 +362,7 @@ namespace StudentManagementApp
             }
 
             UpdateButtonState();
+            UpdateImageButtonVisibility();
         }
 
         private void ClearSearchBox()
@@ -575,6 +571,8 @@ namespace StudentManagementApp
 
         private void UpdateImageButtonVisibility()
         {
+            Debug.WriteLine("TAG");
+            Debug.WriteLine(studentPictureBox.Tag);
             bool hasImage = studentPictureBox.Tag is string path && File.Exists(path);
 
             if (!hasImage)

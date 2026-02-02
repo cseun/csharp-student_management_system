@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -74,12 +75,6 @@ namespace StudentManagementApp
 
             studentScores.Add(studentScoreInfo.Key, studentScoreInfo);
 
-#if DEBUG
-            foreach (StudentScore s in SearchStudentScores())
-            {
-                s.ToString();
-            }
-#endif
             return true;
         }
 
@@ -100,6 +95,7 @@ namespace StudentManagementApp
             else
             {
                 studentScores[oldKey] = newStudentScore;
+                Debug.WriteLine(studentScores[oldKey]);
             }
 
             return true;
