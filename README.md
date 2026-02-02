@@ -1,4 +1,4 @@
-# Student Management App
+﻿# Student Management App
 
 C# WinForms로 만든 간단한 학생 성적 관리 프로그램입니다.
 
@@ -15,5 +15,5 @@ C# WinForms로 만든 간단한 학생 성적 관리 프로그램입니다.
 
 ## CSV 형식
 ```csv
-Grade,Class,No,Name,Year,Semester,ExamType,Korean,English,Math,Social,Science
-1,2,3,김철수,2024,1,Midterm,90,85,88,92,80
+School,Grade,Class,No,Name,Status,ImagePath,Year,Semester,ExamType,Korean,English,Math,Social,Science
+서울고등학교,1,2,3,김철수,Studying,images/kim.png,2024,1,Midterm,90,85,88,92,80
