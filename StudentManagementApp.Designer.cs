@@ -88,6 +88,7 @@
             label8 = new Label();
             examYear = new TextBox();
             groupBox4 = new GroupBox();
+            btnSearchStudentAll = new Button();
             btnAddImage = new Button();
             studentStatus = new ComboBox();
             label19 = new Label();
@@ -369,7 +370,7 @@
             // 
             // btnDelete
             // 
-            btnDelete.Location = new Point(434, 723);
+            btnDelete.Location = new Point(434, 733);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(94, 29);
             btnDelete.TabIndex = 5;
@@ -379,7 +380,7 @@
             // 
             // btnModify
             // 
-            btnModify.Location = new Point(324, 723);
+            btnModify.Location = new Point(324, 733);
             btnModify.Name = "btnModify";
             btnModify.Size = new Size(94, 29);
             btnModify.TabIndex = 4;
@@ -389,7 +390,7 @@
             // 
             // btnAdd
             // 
-            btnAdd.Location = new Point(209, 723);
+            btnAdd.Location = new Point(209, 733);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(94, 29);
             btnAdd.TabIndex = 0;
@@ -413,7 +414,7 @@
             groupBox6.Controls.Add(engScore);
             groupBox6.Controls.Add(label11);
             groupBox6.Controls.Add(koreanScore);
-            groupBox6.Location = new Point(18, 319);
+            groupBox6.Location = new Point(18, 347);
             groupBox6.Name = "groupBox6";
             groupBox6.Size = new Size(656, 367);
             groupBox6.TabIndex = 2;
@@ -561,7 +562,7 @@
             groupBox5.Controls.Add(examSemester);
             groupBox5.Controls.Add(label8);
             groupBox5.Controls.Add(examYear);
-            groupBox5.Location = new Point(18, 213);
+            groupBox5.Location = new Point(18, 241);
             groupBox5.Name = "groupBox5";
             groupBox5.Size = new Size(656, 100);
             groupBox5.TabIndex = 1;
@@ -623,6 +624,7 @@
             // 
             // groupBox4
             // 
+            groupBox4.Controls.Add(btnSearchStudentAll);
             groupBox4.Controls.Add(btnAddImage);
             groupBox4.Controls.Add(studentStatus);
             groupBox4.Controls.Add(label19);
@@ -639,27 +641,35 @@
             groupBox4.Controls.Add(studentName);
             groupBox4.Location = new Point(18, 44);
             groupBox4.Name = "groupBox4";
-            groupBox4.Size = new Size(656, 163);
+            groupBox4.Size = new Size(656, 191);
             groupBox4.TabIndex = 0;
             groupBox4.TabStop = false;
             groupBox4.Text = "Student Info";
             // 
+            // btnSearchStudentAll
+            // 
+            btnSearchStudentAll.BackColor = SystemColors.ActiveCaption;
+            btnSearchStudentAll.Location = new Point(266, 152);
+            btnSearchStudentAll.Name = "btnSearchStudentAll";
+            btnSearchStudentAll.Size = new Size(169, 29);
+            btnSearchStudentAll.TabIndex = 6;
+            btnSearchStudentAll.Text = "Search All Score";
+            btnSearchStudentAll.UseVisualStyleBackColor = false;
+            btnSearchStudentAll.Click += btnSearchStudentAll_Click;
+            // 
             // btnAddImage
             // 
+            btnAddImage.BackColor = Color.FromArgb(160, 0, 0, 0);
+            btnAddImage.FlatAppearance.BorderSize = 0;
+            btnAddImage.FlatStyle = FlatStyle.Flat;
+            btnAddImage.ForeColor = Color.White;
             btnAddImage.Location = new Point(49, 75);
             btnAddImage.Name = "btnAddImage";
             btnAddImage.Size = new Size(94, 29);
             btnAddImage.TabIndex = 31;
-            btnAddImage.Text = "Add Image";
-
-            btnAddImage.FlatStyle = FlatStyle.Flat;
-            btnAddImage.FlatAppearance.BorderSize = 0;
-            btnAddImage.BackColor = Color.FromArgb(160, 0, 0, 0); // 반투명
-            btnAddImage.ForeColor = Color.White;
-            btnAddImage.Text = "Change Image";
             btnAddImage.TabStop = false;
+            btnAddImage.Text = "Change Image";
             btnAddImage.UseVisualStyleBackColor = false;
-
             btnAddImage.Click += btnAddImage_Click;
             btnAddImage.MouseLeave += btnAddImage_MouseLeave;
             btnAddImage.MouseHover += btnAddImage_MouseHover;
@@ -873,5 +883,6 @@
         private Label label21;
         private ComboBox searchSchoolBox;
         private Label label20;
+        private Button btnSearchStudentAll;
     }
 }

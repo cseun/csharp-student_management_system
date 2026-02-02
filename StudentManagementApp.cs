@@ -247,7 +247,7 @@ namespace StudentManagementApp
 
                 // UI에서 입력된 학생성적 정보 가져오기
                 StudentScore newStudentScore = getStudentScoreInfo();
-                
+
                 // 학생 성적 수정
                 bool result = StudentScoreManager.ModifyStudentScore(oldKey, newStudentScore);
                 if (result)
@@ -298,6 +298,7 @@ namespace StudentManagementApp
 
         // 리스트 갱신
         private void RefreshStudentScoreList(
+            StudentKey? targetStudentKey = null,
             Exam? exam = null,
             bool useSearch = false
         )
@@ -308,7 +309,20 @@ namespace StudentManagementApp
             StudentScoreManager.CalculateRank(exam);
 
             List<StudentScore> list;
-            if (useSearch)
+            // 학생 기준 전체 보기인 경우
+            if (targetStudentKey != null)
+            {
+                searchSchoolBox.Text = targetStudentKey.School;
+                searchGradeBox.Text = targetStudentKey.Grade.ToString();
+                searchClassBox.Text = targetStudentKey.Class.ToString();
+                searchNoBox.Text = targetStudentKey.No.ToString();
+
+                list = StudentScoreManager.SearchStudentScores(
+                    studentKey: targetStudentKey,
+                    exam: null
+                );
+            } 
+            else if (useSearch)
             {
                 StudentStatus? status = null;
 
@@ -332,7 +346,14 @@ namespace StudentManagementApp
             }
 
             FillSearchBoxes(list);
+            FillListView(list);
 
+            UpdateButtonState();
+            UpdateImageButtonVisibility();
+        }
+
+        private void FillListView(List<StudentScore> list)
+        {
             foreach (var ss in list)
             {
                 var item = new ListViewItem(ss.Student.Key.School.ToString()); // 학교
@@ -357,13 +378,10 @@ namespace StudentManagementApp
                 item.SubItems.Add(ss.Rank.ToString()); // 석차
 
                 item.Tag = ss.Key; // Key 숨김
-
                 studentScoreList.Items.Add(item);
             }
-
-            UpdateButtonState();
-            UpdateImageButtonVisibility();
         }
+
 
         private void ClearSearchBox()
         {
@@ -393,7 +411,7 @@ namespace StudentManagementApp
             RefreshStudentScoreList();
         }
 
-        private void FillSearchBoxes(IEnumerable<StudentScore> list)
+        private void FillSearchBoxes(List<StudentScore> list)
         {
             searchSchoolBox.Items.Clear();
             searchStatusBox.Items.Clear();
@@ -602,6 +620,25 @@ namespace StudentManagementApp
             {
                 btnAddImage.Text = "";
             }
+        }
+
+        private void btnSearchStudentAll_Click(object sender, EventArgs e)
+        {
+            if (studentScoreList.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("학생을 선택하세요.");
+                return;
+            }
+
+            if (studentScoreList.SelectedItems[0].Tag is not StudentExamKey key)
+            {
+                MessageBox.Show("학생 정보를 확인할 수 없습니다.");
+                return;
+            }
+
+            RefreshStudentScoreList(
+                targetStudentKey: key.StudentKey
+            );
         }
     }
 }
