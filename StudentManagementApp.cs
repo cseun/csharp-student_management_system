@@ -128,8 +128,19 @@ namespace StudentManagementApp
             bool isSelected = studentScoreList.SelectedItems.Count > 0;
 
             btnAdd.Enabled = true;
+
             btnModify.Enabled = isSelected;
             btnDelete.Enabled = isSelected;
+            if(isSelected)
+            {
+                btnModify.BackColor = SystemColors.Info;
+                btnDelete.BackColor = Color.RosyBrown;
+            }
+            else
+            {
+                btnModify.BackColor = SystemColors.Control;
+                btnDelete.BackColor = SystemColors.Control;
+            }
         }
 
         private StudentScore getStudentScoreInfo() // UI에서 학생 성적 정보 가져오기
@@ -421,7 +432,8 @@ namespace StudentManagementApp
 
             _isUpdatingCombo = true;
 
-            try {
+            try
+            {
                 if (comboBox == null)
                 {
                     searchSchoolBox.Items.Clear();
@@ -483,7 +495,7 @@ namespace StudentManagementApp
                     comboBox.Items.AddRange(filtered.ToArray());
                     comboBox.EndUpdate();
 
-                    if (wasOpen) // 드롭다운 복구
+                    if (!comboBox.DroppedDown || wasOpen) // 드롭다운 복구
                     {
                         comboBox.DroppedDown = true;
                     }
@@ -700,7 +712,6 @@ namespace StudentManagementApp
 
         private void searchSchoolBox_TextUpdate(object sender, EventArgs e)
         {
-            Debug.WriteLine(1);
             FillSearchBoxes(currentSearchResult, sender as ComboBox);
         }
 
