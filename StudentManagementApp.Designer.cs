@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             groupBox1 = new GroupBox();
+            btnSearchStudentAll = new Button();
             searchStatusBox = new ComboBox();
             label21 = new Label();
             searchSchoolBox = new ComboBox();
@@ -88,7 +89,6 @@
             examYear = new TextBox();
             btnAdd = new Button();
             groupBox4 = new GroupBox();
-            btnSearchStudentAll = new Button();
             btnAddImage = new Button();
             studentStatus = new ComboBox();
             label19 = new Label();
@@ -113,6 +113,7 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(btnSearchStudentAll);
             groupBox1.Controls.Add(searchStatusBox);
             groupBox1.Controls.Add(label21);
             groupBox1.Controls.Add(searchSchoolBox);
@@ -136,10 +137,21 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "Student List";
             // 
+            // btnSearchStudentAll
+            // 
+            btnSearchStudentAll.BackColor = SystemColors.ActiveCaption;
+            btnSearchStudentAll.Location = new Point(1130, 49);
+            btnSearchStudentAll.Name = "btnSearchStudentAll";
+            btnSearchStudentAll.Size = new Size(178, 29);
+            btnSearchStudentAll.TabIndex = 9;
+            btnSearchStudentAll.Text = "Search Student Scores";
+            btnSearchStudentAll.UseVisualStyleBackColor = false;
+            btnSearchStudentAll.Click += btnSearchStudentAll_Click;
+            // 
             // searchStatusBox
             // 
             searchStatusBox.FormattingEnabled = true;
-            searchStatusBox.Location = new Point(247, 51);
+            searchStatusBox.Location = new Point(240, 51);
             searchStatusBox.Name = "searchStatusBox";
             searchStatusBox.Size = new Size(92, 28);
             searchStatusBox.TabIndex = 2;
@@ -149,7 +161,7 @@
             // label21
             // 
             label21.AutoSize = true;
-            label21.Location = new Point(192, 55);
+            label21.Location = new Point(185, 55);
             label21.Name = "label21";
             label21.Size = new Size(50, 20);
             label21.TabIndex = 19;
@@ -268,7 +280,7 @@
             // searchNoBox
             // 
             searchNoBox.FormattingEnabled = true;
-            searchNoBox.Location = new Point(859, 49);
+            searchNoBox.Location = new Point(830, 49);
             searchNoBox.Name = "searchNoBox";
             searchNoBox.Size = new Size(57, 28);
             searchNoBox.TabIndex = 6;
@@ -278,7 +290,7 @@
             // searchGradeBox
             // 
             searchGradeBox.FormattingEnabled = true;
-            searchGradeBox.Location = new Point(629, 51);
+            searchGradeBox.Location = new Point(608, 51);
             searchGradeBox.Name = "searchGradeBox";
             searchGradeBox.Size = new Size(83, 28);
             searchGradeBox.TabIndex = 4;
@@ -288,7 +300,7 @@
             // searchClassBox
             // 
             searchClassBox.FormattingEnabled = true;
-            searchClassBox.Location = new Point(718, 51);
+            searchClassBox.Location = new Point(697, 51);
             searchClassBox.Name = "searchClassBox";
             searchClassBox.Size = new Size(78, 28);
             searchClassBox.TabIndex = 5;
@@ -298,7 +310,7 @@
             // searchNameBox
             // 
             searchNameBox.FormattingEnabled = true;
-            searchNameBox.Location = new Point(414, 50);
+            searchNameBox.Location = new Point(399, 50);
             searchNameBox.Name = "searchNameBox";
             searchNameBox.Size = new Size(92, 28);
             searchNameBox.TabIndex = 3;
@@ -308,7 +320,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(817, 53);
+            label3.Location = new Point(788, 53);
             label3.Name = "label3";
             label3.Size = new Size(32, 20);
             label3.TabIndex = 12;
@@ -317,7 +329,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(527, 55);
+            label2.Location = new Point(506, 55);
             label2.Name = "label2";
             label2.Size = new Size(90, 20);
             label2.TabIndex = 11;
@@ -326,7 +338,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(359, 54);
+            label1.Location = new Point(344, 54);
             label1.Name = "label1";
             label1.Size = new Size(49, 20);
             label1.TabIndex = 10;
@@ -356,7 +368,7 @@
             // 
             // btnShowAll
             // 
-            btnShowAll.Location = new Point(1056, 48);
+            btnShowAll.Location = new Point(996, 47);
             btnShowAll.Name = "btnShowAll";
             btnShowAll.Size = new Size(80, 30);
             btnShowAll.TabIndex = 8;
@@ -367,7 +379,7 @@
             // btnSearch
             // 
             btnSearch.BackColor = SystemColors.ActiveCaption;
-            btnSearch.Location = new Point(970, 48);
+            btnSearch.Location = new Point(913, 48);
             btnSearch.Name = "btnSearch";
             btnSearch.Size = new Size(80, 30);
             btnSearch.TabIndex = 7;
@@ -649,7 +661,6 @@
             // 
             // groupBox4
             // 
-            groupBox4.Controls.Add(btnSearchStudentAll);
             groupBox4.Controls.Add(btnAddImage);
             groupBox4.Controls.Add(studentStatus);
             groupBox4.Controls.Add(label19);
@@ -670,17 +681,6 @@
             groupBox4.TabIndex = 0;
             groupBox4.TabStop = false;
             groupBox4.Text = "Student Info";
-            // 
-            // btnSearchStudentAll
-            // 
-            btnSearchStudentAll.BackColor = SystemColors.ActiveCaption;
-            btnSearchStudentAll.Location = new Point(319, 358);
-            btnSearchStudentAll.Name = "btnSearchStudentAll";
-            btnSearchStudentAll.Size = new Size(169, 29);
-            btnSearchStudentAll.TabIndex = 18;
-            btnSearchStudentAll.Text = "Search All Score";
-            btnSearchStudentAll.UseVisualStyleBackColor = false;
-            btnSearchStudentAll.Click += btnSearchStudentAll_Click;
             // 
             // btnAddImage
             // 
