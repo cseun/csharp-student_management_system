@@ -129,9 +129,9 @@
             groupBox1.Controls.Add(btnLoadFile);
             groupBox1.Controls.Add(btnShowAll);
             groupBox1.Controls.Add(btnSearch);
-            groupBox1.Location = new Point(12, 0);
+            groupBox1.Location = new Point(12, 8);
             groupBox1.Name = "groupBox1";
-            groupBox1.Size = new Size(1576, 444);
+            groupBox1.Size = new Size(1576, 386);
             groupBox1.TabIndex = 0;
             groupBox1.TabStop = false;
             groupBox1.Text = "Student List";
@@ -139,17 +139,17 @@
             // searchStatusBox
             // 
             searchStatusBox.FormattingEnabled = true;
-            searchStatusBox.Location = new Point(247, 80);
+            searchStatusBox.Location = new Point(247, 51);
             searchStatusBox.Name = "searchStatusBox";
             searchStatusBox.Size = new Size(92, 28);
-            searchStatusBox.TabIndex = 20;
+            searchStatusBox.TabIndex = 2;
             searchStatusBox.TextUpdate += searchStatusBox_TextUpdate;
             searchStatusBox.Enter += searchStatusBox_Enter;
             // 
             // label21
             // 
             label21.AutoSize = true;
-            label21.Location = new Point(192, 84);
+            label21.Location = new Point(192, 55);
             label21.Name = "label21";
             label21.Size = new Size(50, 20);
             label21.TabIndex = 19;
@@ -158,17 +158,17 @@
             // searchSchoolBox
             // 
             searchSchoolBox.FormattingEnabled = true;
-            searchSchoolBox.Location = new Point(82, 82);
+            searchSchoolBox.Location = new Point(82, 53);
             searchSchoolBox.Name = "searchSchoolBox";
             searchSchoolBox.Size = new Size(92, 28);
-            searchSchoolBox.TabIndex = 18;
+            searchSchoolBox.TabIndex = 1;
             searchSchoolBox.TextUpdate += searchSchoolBox_TextUpdate;
             searchSchoolBox.Enter += searchSchoolBox_Enter;
             // 
             // label20
             // 
             label20.AutoSize = true;
-            label20.Location = new Point(27, 86);
+            label20.Location = new Point(27, 57);
             label20.Name = "label20";
             label20.Size = new Size(55, 20);
             label20.TabIndex = 17;
@@ -177,10 +177,10 @@
             // studentScoreList
             // 
             studentScoreList.Columns.AddRange(new ColumnHeader[] { list_school, list_grade, list_class, list_student_no, list_name, list_status, list_year, list_semester, list_exam_type, list_kor_score, list_eng_score, list_math_score, list_social_score, list_science_score, list_total_score, list_rank });
-            studentScoreList.Location = new Point(26, 123);
+            studentScoreList.Location = new Point(26, 94);
             studentScoreList.Name = "studentScoreList";
-            studentScoreList.Size = new Size(1531, 243);
-            studentScoreList.TabIndex = 16;
+            studentScoreList.Size = new Size(1531, 271);
+            studentScoreList.TabIndex = 11;
             studentScoreList.UseCompatibleStateImageBehavior = false;
             studentScoreList.View = View.Details;
             studentScoreList.SelectedIndexChanged += studentScoreList_SelectedIndexChanged;
@@ -268,47 +268,47 @@
             // searchNoBox
             // 
             searchNoBox.FormattingEnabled = true;
-            searchNoBox.Location = new Point(859, 78);
+            searchNoBox.Location = new Point(859, 49);
             searchNoBox.Name = "searchNoBox";
             searchNoBox.Size = new Size(57, 28);
-            searchNoBox.TabIndex = 15;
+            searchNoBox.TabIndex = 6;
             searchNoBox.TextUpdate += searchNoBox_TextUpdate;
             searchNoBox.Enter += searchNoBox_Enter;
             // 
             // searchGradeBox
             // 
             searchGradeBox.FormattingEnabled = true;
-            searchGradeBox.Location = new Point(629, 80);
+            searchGradeBox.Location = new Point(629, 51);
             searchGradeBox.Name = "searchGradeBox";
             searchGradeBox.Size = new Size(83, 28);
-            searchGradeBox.TabIndex = 14;
+            searchGradeBox.TabIndex = 4;
             searchGradeBox.TextUpdate += searchGradeBox_TextUpdate;
             searchGradeBox.Enter += searchGradeBox_Enter;
             // 
             // searchClassBox
             // 
             searchClassBox.FormattingEnabled = true;
-            searchClassBox.Location = new Point(718, 80);
+            searchClassBox.Location = new Point(718, 51);
             searchClassBox.Name = "searchClassBox";
             searchClassBox.Size = new Size(78, 28);
-            searchClassBox.TabIndex = 14;
+            searchClassBox.TabIndex = 5;
             searchClassBox.TextUpdate += searchClassBox_TextUpdate;
             searchClassBox.Enter += searchClassBox_Enter;
             // 
             // searchNameBox
             // 
             searchNameBox.FormattingEnabled = true;
-            searchNameBox.Location = new Point(414, 79);
+            searchNameBox.Location = new Point(414, 50);
             searchNameBox.Name = "searchNameBox";
             searchNameBox.Size = new Size(92, 28);
-            searchNameBox.TabIndex = 13;
+            searchNameBox.TabIndex = 3;
             searchNameBox.TextUpdate += searchNameBox_TextUpdate;
             searchNameBox.Enter += searchNameBox_Enter;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(817, 82);
+            label3.Location = new Point(817, 53);
             label3.Name = "label3";
             label3.Size = new Size(32, 20);
             label3.TabIndex = 12;
@@ -317,7 +317,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(527, 84);
+            label2.Location = new Point(527, 55);
             label2.Name = "label2";
             label2.Size = new Size(90, 20);
             label2.TabIndex = 11;
@@ -326,7 +326,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(359, 83);
+            label1.Location = new Point(359, 54);
             label1.Name = "label1";
             label1.Size = new Size(49, 20);
             label1.TabIndex = 10;
@@ -335,10 +335,10 @@
             // btnSaveFile
             // 
             btnSaveFile.BackColor = Color.DarkSeaGreen;
-            btnSaveFile.Location = new Point(1442, 77);
+            btnSaveFile.Location = new Point(1442, 48);
             btnSaveFile.Name = "btnSaveFile";
             btnSaveFile.Size = new Size(112, 29);
-            btnSaveFile.TabIndex = 9;
+            btnSaveFile.TabIndex = 10;
             btnSaveFile.Text = "Save File(.csv)";
             btnSaveFile.UseVisualStyleBackColor = false;
             btnSaveFile.Click += btnSaveFile_Click;
@@ -346,20 +346,20 @@
             // btnLoadFile
             // 
             btnLoadFile.BackColor = SystemColors.Info;
-            btnLoadFile.Location = new Point(1317, 77);
+            btnLoadFile.Location = new Point(1317, 48);
             btnLoadFile.Name = "btnLoadFile";
             btnLoadFile.Size = new Size(116, 29);
-            btnLoadFile.TabIndex = 8;
+            btnLoadFile.TabIndex = 9;
             btnLoadFile.Text = "Load File(.csv)";
             btnLoadFile.UseVisualStyleBackColor = false;
             btnLoadFile.Click += btnLoadFile_Click;
             // 
             // btnShowAll
             // 
-            btnShowAll.Location = new Point(1056, 77);
+            btnShowAll.Location = new Point(1056, 48);
             btnShowAll.Name = "btnShowAll";
             btnShowAll.Size = new Size(80, 30);
-            btnShowAll.TabIndex = 7;
+            btnShowAll.TabIndex = 8;
             btnShowAll.Text = "Show All";
             btnShowAll.UseVisualStyleBackColor = true;
             btnShowAll.Click += btnShowAll_Click;
@@ -367,10 +367,10 @@
             // btnSearch
             // 
             btnSearch.BackColor = SystemColors.ActiveCaption;
-            btnSearch.Location = new Point(970, 77);
+            btnSearch.Location = new Point(970, 48);
             btnSearch.Name = "btnSearch";
             btnSearch.Size = new Size(80, 30);
-            btnSearch.TabIndex = 6;
+            btnSearch.TabIndex = 7;
             btnSearch.Text = "Search";
             btnSearch.UseVisualStyleBackColor = false;
             btnSearch.Click += btnSearch_Click;
@@ -383,9 +383,9 @@
             groupBox2.Controls.Add(groupBox5);
             groupBox2.Controls.Add(btnAdd);
             groupBox2.Controls.Add(groupBox4);
-            groupBox2.Location = new Point(12, 465);
+            groupBox2.Location = new Point(12, 402);
             groupBox2.Name = "groupBox2";
-            groupBox2.Size = new Size(1576, 544);
+            groupBox2.Size = new Size(1576, 555);
             groupBox2.TabIndex = 1;
             groupBox2.TabStop = false;
             groupBox2.Text = "Properties";
@@ -393,10 +393,10 @@
             // btnDelete
             // 
             btnDelete.BackColor = Color.RosyBrown;
-            btnDelete.Location = new Point(871, 482);
+            btnDelete.Location = new Point(871, 490);
             btnDelete.Name = "btnDelete";
             btnDelete.Size = new Size(94, 29);
-            btnDelete.TabIndex = 5;
+            btnDelete.TabIndex = 29;
             btnDelete.Text = "Delete";
             btnDelete.UseVisualStyleBackColor = false;
             btnDelete.Click += btnDelete_Click;
@@ -404,10 +404,10 @@
             // btnModify
             // 
             btnModify.BackColor = SystemColors.Info;
-            btnModify.Location = new Point(761, 482);
+            btnModify.Location = new Point(761, 490);
             btnModify.Name = "btnModify";
             btnModify.Size = new Size(94, 29);
-            btnModify.TabIndex = 4;
+            btnModify.TabIndex = 28;
             btnModify.Text = "Modify";
             btnModify.UseVisualStyleBackColor = false;
             btnModify.Click += btnModify_Click;
@@ -450,7 +450,7 @@
             rank.Name = "rank";
             rank.ReadOnly = true;
             rank.Size = new Size(100, 27);
-            rank.TabIndex = 42;
+            rank.TabIndex = 31;
             rank.Text = "-";
             rank.TextAlign = HorizontalAlignment.Right;
             // 
@@ -469,7 +469,7 @@
             totalScore.Name = "totalScore";
             totalScore.ReadOnly = true;
             totalScore.Size = new Size(100, 27);
-            totalScore.TabIndex = 40;
+            totalScore.TabIndex = 30;
             totalScore.Text = "0";
             totalScore.TextAlign = HorizontalAlignment.Right;
             // 
@@ -487,7 +487,7 @@
             scienceScore.Location = new Point(316, 100);
             scienceScore.Name = "scienceScore";
             scienceScore.Size = new Size(100, 27);
-            scienceScore.TabIndex = 38;
+            scienceScore.TabIndex = 26;
             scienceScore.Text = "0";
             scienceScore.TextAlign = HorizontalAlignment.Right;
             scienceScore.KeyPress += scienceScore_KeyPress;
@@ -506,7 +506,7 @@
             socialScore.Location = new Point(117, 100);
             socialScore.Name = "socialScore";
             socialScore.Size = new Size(100, 27);
-            socialScore.TabIndex = 36;
+            socialScore.TabIndex = 25;
             socialScore.Text = "0";
             socialScore.TextAlign = HorizontalAlignment.Right;
             socialScore.KeyPress += socialScore_KeyPress;
@@ -525,7 +525,7 @@
             mathScore.Location = new Point(516, 45);
             mathScore.Name = "mathScore";
             mathScore.Size = new Size(100, 27);
-            mathScore.TabIndex = 34;
+            mathScore.TabIndex = 24;
             mathScore.Text = "0";
             mathScore.TextAlign = HorizontalAlignment.Right;
             mathScore.KeyPress += mathScore_KeyPress;
@@ -544,7 +544,7 @@
             engScore.Location = new Point(316, 45);
             engScore.Name = "engScore";
             engScore.Size = new Size(100, 27);
-            engScore.TabIndex = 32;
+            engScore.TabIndex = 23;
             engScore.Text = "0";
             engScore.TextAlign = HorizontalAlignment.Right;
             engScore.KeyPress += engScore_KeyPress;
@@ -563,7 +563,7 @@
             koreanScore.Location = new Point(117, 45);
             koreanScore.Name = "koreanScore";
             koreanScore.Size = new Size(100, 27);
-            koreanScore.TabIndex = 30;
+            koreanScore.TabIndex = 22;
             koreanScore.Text = "0";
             koreanScore.TextAlign = HorizontalAlignment.Right;
             koreanScore.KeyPress += koreanScore_KeyPress;
@@ -591,7 +591,7 @@
             examType.Location = new Point(556, 43);
             examType.Name = "examType";
             examType.Size = new Size(100, 28);
-            examType.TabIndex = 17;
+            examType.TabIndex = 21;
             // 
             // label10
             // 
@@ -616,7 +616,7 @@
             examSemester.Location = new Point(324, 45);
             examSemester.Name = "examSemester";
             examSemester.Size = new Size(100, 27);
-            examSemester.TabIndex = 27;
+            examSemester.TabIndex = 20;
             examSemester.KeyPress += examSemester_KeyPress;
             // 
             // label8
@@ -633,16 +633,16 @@
             examYear.Location = new Point(99, 45);
             examYear.Name = "examYear";
             examYear.Size = new Size(100, 27);
-            examYear.TabIndex = 25;
+            examYear.TabIndex = 19;
             examYear.KeyPress += examYear_KeyPress;
             // 
             // btnAdd
             // 
             btnAdd.BackColor = Color.DarkSeaGreen;
-            btnAdd.Location = new Point(646, 482);
+            btnAdd.Location = new Point(646, 490);
             btnAdd.Name = "btnAdd";
             btnAdd.Size = new Size(94, 29);
-            btnAdd.TabIndex = 0;
+            btnAdd.TabIndex = 27;
             btnAdd.Text = "Add";
             btnAdd.UseVisualStyleBackColor = false;
             btnAdd.Click += btnAdd_Click;
@@ -677,7 +677,7 @@
             btnSearchStudentAll.Location = new Point(319, 358);
             btnSearchStudentAll.Name = "btnSearchStudentAll";
             btnSearchStudentAll.Size = new Size(169, 29);
-            btnSearchStudentAll.TabIndex = 6;
+            btnSearchStudentAll.TabIndex = 18;
             btnSearchStudentAll.Text = "Search All Score";
             btnSearchStudentAll.UseVisualStyleBackColor = false;
             btnSearchStudentAll.Click += btnSearchStudentAll_Click;
@@ -691,7 +691,7 @@
             btnAddImage.Location = new Point(330, 79);
             btnAddImage.Name = "btnAddImage";
             btnAddImage.Size = new Size(155, 101);
-            btnAddImage.TabIndex = 31;
+            btnAddImage.TabIndex = 11;
             btnAddImage.TabStop = false;
             btnAddImage.Text = "Change Image";
             btnAddImage.UseVisualStyleBackColor = false;
@@ -707,7 +707,7 @@
             studentStatus.Location = new Point(580, 294);
             studentStatus.Name = "studentStatus";
             studentStatus.Size = new Size(100, 28);
-            studentStatus.TabIndex = 29;
+            studentStatus.TabIndex = 17;
             // 
             // label19
             // 
@@ -732,7 +732,7 @@
             studentSchool.Location = new Point(153, 244);
             studentSchool.Name = "studentSchool";
             studentSchool.Size = new Size(100, 27);
-            studentSchool.TabIndex = 26;
+            studentSchool.TabIndex = 12;
             // 
             // studentPictureBox
             // 
@@ -758,7 +758,7 @@
             studentNo.Location = new Point(580, 238);
             studentNo.Name = "studentNo";
             studentNo.Size = new Size(100, 27);
-            studentNo.TabIndex = 23;
+            studentNo.TabIndex = 14;
             studentNo.KeyPress += studentNo_KeyPress;
             // 
             // label6
@@ -775,7 +775,7 @@
             studentClass.Location = new Point(361, 294);
             studentClass.Name = "studentClass";
             studentClass.Size = new Size(100, 27);
-            studentClass.TabIndex = 21;
+            studentClass.TabIndex = 16;
             // 
             // label5
             // 
@@ -791,7 +791,7 @@
             studentGrade.Location = new Point(361, 241);
             studentGrade.Name = "studentGrade";
             studentGrade.Size = new Size(100, 27);
-            studentGrade.TabIndex = 19;
+            studentGrade.TabIndex = 13;
             studentGrade.KeyPress += studentGrade_KeyPress;
             // 
             // label4
@@ -808,13 +808,13 @@
             studentName.Location = new Point(153, 294);
             studentName.Name = "studentName";
             studentName.Size = new Size(100, 27);
-            studentName.TabIndex = 17;
+            studentName.TabIndex = 15;
             // 
             // StudentManagementApp
             // 
             AutoScaleDimensions = new SizeF(9F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1600, 1331);
+            ClientSize = new Size(1600, 970);
             Controls.Add(groupBox2);
             Controls.Add(groupBox1);
             Name = "StudentManagementApp";
