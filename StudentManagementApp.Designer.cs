@@ -143,6 +143,8 @@
             searchStatusBox.Name = "searchStatusBox";
             searchStatusBox.Size = new Size(92, 28);
             searchStatusBox.TabIndex = 20;
+            searchStatusBox.TextUpdate += searchStatusBox_TextUpdate;
+            searchStatusBox.Enter += searchStatusBox_Enter;
             // 
             // label21
             // 
@@ -160,6 +162,8 @@
             searchSchoolBox.Name = "searchSchoolBox";
             searchSchoolBox.Size = new Size(92, 28);
             searchSchoolBox.TabIndex = 18;
+            searchSchoolBox.TextUpdate += searchSchoolBox_TextUpdate;
+            searchSchoolBox.Enter += searchSchoolBox_Enter;
             // 
             // label20
             // 
@@ -260,6 +264,8 @@
             searchNoBox.Name = "searchNoBox";
             searchNoBox.Size = new Size(57, 28);
             searchNoBox.TabIndex = 15;
+            searchNoBox.TextUpdate += searchNoBox_TextUpdate;
+            searchNoBox.Enter += searchNoBox_Enter;
             // 
             // searchGradeBox
             // 
@@ -268,6 +274,8 @@
             searchGradeBox.Name = "searchGradeBox";
             searchGradeBox.Size = new Size(83, 28);
             searchGradeBox.TabIndex = 14;
+            searchGradeBox.TextUpdate += searchGradeBox_TextUpdate;
+            searchGradeBox.Enter += searchGradeBox_Enter;
             // 
             // searchClassBox
             // 
@@ -276,6 +284,8 @@
             searchClassBox.Name = "searchClassBox";
             searchClassBox.Size = new Size(78, 28);
             searchClassBox.TabIndex = 14;
+            searchClassBox.TextUpdate += searchClassBox_TextUpdate;
+            searchClassBox.Enter += searchClassBox_Enter;
             // 
             // searchNameBox
             // 
@@ -284,6 +294,8 @@
             searchNameBox.Name = "searchNameBox";
             searchNameBox.Size = new Size(92, 28);
             searchNameBox.TabIndex = 13;
+            searchNameBox.TextUpdate += searchNameBox_TextUpdate;
+            searchNameBox.Enter += searchNameBox_Enter;
             // 
             // label3
             // 

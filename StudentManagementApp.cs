@@ -296,6 +296,7 @@ namespace StudentManagementApp
 
         }
 
+        private List<StudentScore> currentSearchResult;
         // 리스트 갱신
         private void RefreshStudentScoreList(
             StudentKey? targetStudentKey = null,
@@ -321,7 +322,7 @@ namespace StudentManagementApp
                     studentKey: targetStudentKey,
                     exam: null
                 );
-            } 
+            }
             else if (useSearch)
             {
                 StudentStatus? status = null;
@@ -345,6 +346,7 @@ namespace StudentManagementApp
                 list = StudentScoreManager.SearchStudentScores();
             }
 
+            currentSearchResult = list;
             FillSearchBoxes(list);
             FillListView(list);
 
@@ -411,32 +413,89 @@ namespace StudentManagementApp
             RefreshStudentScoreList();
         }
 
-        private void FillSearchBoxes(List<StudentScore> list)
+        private bool _isUpdatingCombo = false; // 재귀 방지
+        private void FillSearchBoxes(List<StudentScore> list, ComboBox? comboBox = null)
         {
-            searchSchoolBox.Items.Clear();
-            searchStatusBox.Items.Clear();
-            searchNameBox.Items.Clear();
-            searchGradeBox.Items.Clear();
-            searchClassBox.Items.Clear();
-            searchNoBox.Items.Clear();
+            if (_isUpdatingCombo) return;
+            if (list == null) return;
 
-            searchSchoolBox.Items.AddRange(
-                list.Select(s => s.Student.Key.School).Distinct().ToArray());
+            _isUpdatingCombo = true;
 
-            searchStatusBox.Items.AddRange(
-                list.Select(s => s.Student.Status.ToString()).Distinct().ToArray());
+            try {
+                if (comboBox == null)
+                {
+                    searchSchoolBox.Items.Clear();
+                    searchStatusBox.Items.Clear();
+                    searchNameBox.Items.Clear();
+                    searchGradeBox.Items.Clear();
+                    searchClassBox.Items.Clear();
+                    searchNoBox.Items.Clear();
 
-            searchNameBox.Items.AddRange(
-                list.Select(s => s.Student.Name).Distinct().ToArray());
+                    searchSchoolBox.Items.AddRange(
+                        list.Select(s => s.Student.Key.School).Distinct().ToArray());
 
-            searchGradeBox.Items.AddRange(
-                list.Select(s => s.Student.Key.Grade.ToString()).Distinct().ToArray());
+                    searchStatusBox.Items.AddRange(
+                        list.Select(s => s.Student.Status.ToString()).Distinct().ToArray());
 
-            searchClassBox.Items.AddRange(
-                list.Select(s => s.Student.Key.Class.ToString()).Distinct().ToArray());
+                    searchNameBox.Items.AddRange(
+                        list.Select(s => s.Student.Name).Distinct().ToArray());
 
-            searchNoBox.Items.AddRange(
-                list.Select(s => s.Student.Key.No.ToString()).Distinct().ToArray());
+                    searchGradeBox.Items.AddRange(
+                        list.Select(s => s.Student.Key.Grade.ToString()).Distinct().ToArray());
+
+                    searchClassBox.Items.AddRange(
+                        list.Select(s => s.Student.Key.Class.ToString()).Distinct().ToArray());
+
+                    searchNoBox.Items.AddRange(
+                        list.Select(s => s.Student.Key.No.ToString()).Distinct().ToArray());
+                }
+                else
+                {
+                    string input = comboBox.Text;
+
+                    IEnumerable<string> values = comboBox switch
+                    {
+                        var cb when cb == searchSchoolBox =>
+                            list.Select(s => s.Student.Key.School),
+                        var cb when cb == searchStatusBox =>
+                            list.Select(s => s.Student.Status.ToString()),
+                        var cb when cb == searchNameBox =>
+                            list.Select(s => s.Student.Name),
+                        var cb when cb == searchGradeBox =>
+                            list.Select(s => s.Student.Key.Grade.ToString()),
+                        var cb when cb == searchClassBox =>
+                            list.Select(s => s.Student.Key.Class.ToString()),
+                        var cb when cb == searchNoBox =>
+                            list.Select(s => s.Student.Key.No.ToString()),
+                        _ => throw new InvalidOperationException("알 수 없는 검색 박스입니다.")
+                    };
+
+                    var filtered = string.IsNullOrWhiteSpace(input)
+                        ? values.Distinct()
+                        : values.Where(v => v.Contains(
+                            input, StringComparison.OrdinalIgnoreCase
+                            )).Distinct(); //대소문자 무시
+
+                    bool wasOpen = comboBox.DroppedDown;
+
+                    comboBox.BeginUpdate(); // 화면 그리기 업데이트 후 재시작 (깜빡임 방지)
+                    comboBox.Items.Clear(); // 내부적으로 드롭다운을 닫음.
+                    comboBox.Items.AddRange(filtered.ToArray());
+                    comboBox.EndUpdate();
+
+                    if (wasOpen) // 드롭다운 복구
+                    {
+                        comboBox.DroppedDown = true;
+                    }
+
+                    comboBox.SelectionStart = comboBox.Text.Length; // 커서 위치 유지
+
+                }
+            }
+            finally
+            {
+                _isUpdatingCombo = false;
+            }
         }
 
         #region 입력값 숫자 필터링
@@ -589,8 +648,6 @@ namespace StudentManagementApp
 
         private void UpdateImageButtonVisibility()
         {
-            Debug.WriteLine("TAG");
-            Debug.WriteLine(studentPictureBox.Tag);
             bool hasImage = studentPictureBox.Tag is string path && File.Exists(path);
 
             if (!hasImage)
@@ -640,5 +697,66 @@ namespace StudentManagementApp
                 targetStudentKey: key.StudentKey
             );
         }
+
+        private void searchSchoolBox_TextUpdate(object sender, EventArgs e)
+        {
+            Debug.WriteLine(1);
+            FillSearchBoxes(currentSearchResult, sender as ComboBox);
+        }
+
+        private void searchStatusBox_TextUpdate(object sender, EventArgs e)
+        {
+            FillSearchBoxes(currentSearchResult, sender as ComboBox);
+        }
+
+        private void searchNameBox_TextUpdate(object sender, EventArgs e)
+        {
+            FillSearchBoxes(currentSearchResult, sender as ComboBox);
+        }
+
+        private void searchGradeBox_TextUpdate(object sender, EventArgs e)
+        {
+            FillSearchBoxes(currentSearchResult, sender as ComboBox);
+        }
+
+        private void searchClassBox_TextUpdate(object sender, EventArgs e)
+        {
+            FillSearchBoxes(currentSearchResult, sender as ComboBox);
+        }
+
+        private void searchNoBox_TextUpdate(object sender, EventArgs e)
+        {
+            FillSearchBoxes(currentSearchResult, sender as ComboBox);
+        }
+
+        private void searchSchoolBox_Enter(object sender, EventArgs e)
+        {
+            FillSearchBoxes(currentSearchResult, sender as ComboBox);
+        }
+
+        private void searchNameBox_Enter(object sender, EventArgs e)
+        {
+            FillSearchBoxes(currentSearchResult, sender as ComboBox);
+        }
+
+        private void searchStatusBox_Enter(object sender, EventArgs e)
+        {
+            FillSearchBoxes(currentSearchResult, sender as ComboBox);
+        }
+
+        private void searchGradeBox_Enter(object sender, EventArgs e)
+        {
+            FillSearchBoxes(currentSearchResult, sender as ComboBox);
+        }
+        private void searchClassBox_Enter(object sender, EventArgs e)
+        {
+            FillSearchBoxes(currentSearchResult, sender as ComboBox);
+        }
+
+        private void searchNoBox_Enter(object sender, EventArgs e)
+        {
+            FillSearchBoxes(currentSearchResult, sender as ComboBox);
+        }
+
     }
 }
